@@ -191,9 +191,8 @@ def progressbar(summ, iteration, suffix="", prefix=""):
     percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
     filledLength = int(50 * iteration // summ)
     bar = "█" * filledLength + '-' * (50 - filledLength)
-    color = "\33[33m"
     print('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix), end = "\r")
-    
+
 def chartpillers(array: list, valueRange:list, hight: int, labelX="", lableY="", symbole="█"):
     chart = ""
     valueRangeprop = abs(valueRange[1]-valueRange[0]) / hight
