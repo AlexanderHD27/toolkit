@@ -191,46 +191,6 @@ def progressbar(summ, iteration, suffix="", prefix=""):
     bar = "█" * filledLength + '-' * (50 - filledLength)
     print('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix), end = "\r")
 
-def chartpillers(array: list, valueRange:list, hight: int, symbole="█"):
-    chart = ""
-    valueRangeprop = abs(valueRange[1]-valueRange[0]) / hight
-    values = array.copy()
-
-    for i in range(len(values)):
-        values[i] = abs(int(values[i] / valueRangeprop))
-
-    for i in range(len(values)):
-
-        if values[i] >= hight:
-            chart += symbole*(hight) + "\n"
-        elif values[i] <= 0:
-            chart += " "*(hight) + "\n"
-        else:
-            chart += symbole*values[i] + " "*(hight-values[i]) + "\n"
-        
-        
-    chart = chart[:-1]
-
-    prefix = "┌" + "─"*len(values) + "┐\n│"
-    sufix = "│\n└" + "─"*len(values) + "┘"
-    chart = (prefix + rotStringRect(chart).replace("\n", "│\n│") + sufix).split("\n")
-    
-    leaghtnumber = len(str((len(chart)-1)*valueRangeprop)) + 2
-
-    chart[0] = leaghtnumber*" " + chart[0]
-    chart[-1] = leaghtnumber*" " + chart[-1]
-
-    n = valueRange[1]
-    for i in range(1, hight+1):
-        chart[i] = "{:.1f}".format(n).ljust(leaghtnumber) + "┤" +chart[i][1:]
-        n -= valueRangeprop
-
-    chartString = ""
-    for i in chart:
-        chartString += i + "\n"
-
-    return  chartString
-
 def chart(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=colors.WHITE, colorMin=colors.WHITE, colorZero=colors.WHITE):
 
     if leaght <= 0:
