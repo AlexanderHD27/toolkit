@@ -40,8 +40,6 @@ def rotStringRect(string: str):
     c = c[:-1]
     return c
 
-
-
 def getcolorInt(fg, bg):
     return "\33[38;5;" + str(fg) + "m" + "\33[48;5;" + str(bg) + "m"
 
@@ -193,23 +191,43 @@ def progressbar(summ, iteration, suffix="", prefix=""):
     bar = "█" * filledLength + '-' * (50 - filledLength)
     print('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix), end = "\r")
 
-def chartpillers(array: list, valueRange:list, hight: int, labelX="", lableY="", symbole="█"):
+def chartpillers(array: list, valueRange:list, hight: int, symbole="█"):
     chart = ""
     valueRangeprop = abs(valueRange[1]-valueRange[0]) / hight
-    print(valueRangeprop)
     values = array.copy()
 
     for i in range(len(values)):
-        values[i] = round(values[i] / valueRangeprop)
+        values[i] = abs(round(values[i] / valueRangeprop))
 
     for i in range(len(values)):
+
         if values[i] >= hight:
-            chart += symbole*hight + "\n"
+            chart += symbole*(hight) + "\n"
         elif values[i] <= 0:
-            chart += " "*hight + "\n"
+            chart += " "*(hight) + "\n"
         else:
             chart += symbole*values[i] + " "*(hight-values[i]) + "\n"
+        
+        
     chart = chart[:-1]
 
-    return rotStringRect(chart)
+    prefix = "┌" + "─"*len(values) + "┐\n│"
+    sufix = "│\n└" + "─"*len(values) + "┘"
+    chart = (prefix + rotStringRect(chart).replace("\n", "│\n│") + sufix).split("\n")
+    
+    leaghtnumber = len(str((len(chart)-1)*valueRangeprop)) + 2
+
+    chart[0] = leaghtnumber*" " + chart[0]
+    chart[-1] = leaghtnumber*" " + chart[-1]
+
+    n = valueRange[1]
+    for i in range(1, hight+1):
+        chart[i] = "{:.1f}".format(n).ljust(leaghtnumber) + "┤" +chart[i][1:]
+        n -= valueRangeprop
+
+    chartString = ""
+    for i in chart:
+        chartString += i + "\n"
+
+    return  chartString
 
