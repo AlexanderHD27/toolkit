@@ -185,11 +185,26 @@ def colortable(array: list, cellsize: int, selected: dict, style=1, direction=-1
     
     return table
 
-def progressbar(summ, iteration, suffix="", prefix=""):
+def progressbar(summ, iteration, suffix="", prefix="", leaght=50):
     percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
-    filledLength = int(50 * iteration // summ)
-    bar = "█" * filledLength + '-' * (50 - filledLength)
+    filledLength = int(leaght * iteration // summ)
+    bar = "█" * filledLength + '-' * (leaght - filledLength)
     print('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix), end = "\r")
+
+def statebar(summ, stat, suffix="", prefix="", leaght=50):
+    filledLength = int(leaght * stat // summ)
+    if filledLength == 0:
+        bar = "|" + '-' * (leaght - filledLength)
+    elif filledLength > leaght:
+        bar = "-"*leaght
+    else:
+        bar = "="*(filledLength-1) + "|" + '-' * (leaght - filledLength)
+
+    print('\r%s |%s| %s' % (suffix, bar, prefix), end = "\r")
+
+def percent(summ, iteration, suffix="", prefix=""):
+    percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
+    print('\r%s %s%% %s' % (suffix, percent, prefix), end = "\r")
 
 def chart(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=colors.WHITE, colorMin=colors.WHITE, colorZero=colors.WHITE):
 
