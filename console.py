@@ -197,7 +197,7 @@ def chartpillers(array: list, valueRange:list, hight: int, symbole="█"):
     values = array.copy()
 
     for i in range(len(values)):
-        values[i] = abs(round(values[i] / valueRangeprop))
+        values[i] = abs(int(values[i] / valueRangeprop))
 
     for i in range(len(values)):
 
@@ -231,3 +231,120 @@ def chartpillers(array: list, valueRange:list, hight: int, symbole="█"):
 
     return  chartString
 
+def chart(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=colors.WHITE, colorMin=colors.WHITE, colorZero=colors.WHITE):
+
+    if leaght <= 0:
+        values = array.copy()
+    else:
+        values = array[:leaght].copy()
+
+    highest = valuerange[1]
+    lowest = valuerange[0]
+
+    valueMap = []
+    step = (highest-lowest) / hight
+    n = lowest + step
+
+    negative = 0
+    positive = 0
+    zero = 0
+
+    for i in range(hight):
+        valueMap.append(n)
+        if n > 0:
+            positive += 1
+        elif n == 0:
+            zero += 1
+        elif n < 0:
+            negative += 1
+
+        n += step
+
+    chartValues = []
+
+    for i in values:
+        chartValues.append(int(i/step))
+    
+    chart = []
+
+    if styleGraph == 0:
+        for i in chartValues:
+            if not rotated:
+                if i > 0:
+                    if i > positive:
+                        chart.append(colorPos + " "*negative + " "*zero + "█"*positive + colors.RESET)
+                    else:
+                        chart.append(colorPos + " "*negative + " "*zero + "█"*i + " "*(positive-i) + colors.RESET)
+                elif i == 0:
+                    chart.append(colorZero + " "*negative + "█"*zero + " "*positive + colors.RESET)
+                elif i < 0: 
+                    if i < negative*-1:
+                        chart.append(colorMin + "█"*negative + " "*zero + " "*positive + colors.RESET)
+                    else: 
+                        chart.append(colorMin + " "*(negative-abs(i)) + "█"*abs(i) + " "*zero + " "*positive + colors.RESET)
+
+            else:
+                if i > 0:
+                    if i > positive:
+                        chart.append(" "*negative + " "*zero + "█"*positive)
+                    else:
+                        chart.append(" "*negative + " "*zero + "█"*i + " "*(positive-i))
+                elif i == 0:
+                    chart.append(" "*negative + "█"*zero + " "*positive)
+                elif i < 0: 
+                    if i < negative*-1:
+                        chart.append("█"*negative + " "*zero + " "*positive)
+                    else: 
+                        chart.append(" "*(negative-abs(i)) + "█"*abs(i) + " "*zero + " "*positive)
+    
+    chartString = ""
+    valueMap.reverse()
+
+    for i in chart:
+        chartString += i + "\n"
+
+    chartString = chartString[:-1]
+
+    if rotated:
+        chartString = rotStringRect(chartString)
+        chart = chartString.split("\n")
+
+        for i in range(len(chart)):
+            if valueMap[i] > 0:
+                chart[i] = colorPos + chart[i] + colors.RESET
+            elif valueMap[i] == 0:
+                chart[i] = colorZero + chart[i] + colors.RESET
+            elif valueMap[i] < 0:
+                chart[i] = colorMin + chart[i] + colors.RESET
+        
+        if styleBoarder == 0:
+            numberleaght = 0
+            for i in valueMap:
+                if len("{: .1f}".format(i)) > numberleaght:
+                    numberleaght = len("{: .1f}".format(i))
+
+            for i in range(len(chart)):
+                chart[i] = "{: .1f}".format(valueMap[i]).ljust(numberleaght) + " ┤" + chart[i] + "│"
+
+            chart = [" "*(numberleaght+1) + "┌" + "─"*len(values) + "┐"] + chart
+            chart.append(" "*(numberleaght+1) + "└" + "─"*len(values) + "┘")
+
+        chartString = ""
+        for i in chart:
+            chartString += i + "\n"
+
+    else:
+        chart = chartString.split("\n")
+        
+        if styleBoarder == 0:
+            for i in range(len(chart)):
+                chart[i] = "│" + chart[i] + "│"
+
+            chart = [" "*(negative+1) + "0"*zero + "\n┌" + "─"*negative + "┬"*zero + "─"*positive + "┐"] + chart
+            chart.append("└" + "─"*negative + "┴"*zero + "─"*positive + "┘")
+
+        chartString = ""
+        for i in chart:
+            chartString += i + "\n"
+
+    return chartString
