@@ -193,4 +193,24 @@ def progressbar(summ, iteration, suffix="", prefix=""):
     bar = "█" * filledLength + '-' * (50 - filledLength)
     color = "\33[33m"
     print('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix), end = "\r")
+    
+def chartpillers(array: list, valueRange:list, hight: int, labelX="", lableY="", symbole="█"):
+    chart = ""
+    valueRangeprop = abs(valueRange[1]-valueRange[0]) / hight
+    print(valueRangeprop)
+    values = array.copy()
+
+    for i in range(len(values)):
+        values[i] = round(values[i] / valueRangeprop)
+
+    for i in range(len(values)):
+        if values[i] >= hight:
+            chart += symbole*hight + "\n"
+        elif values[i] <= 0:
+            chart += " "*hight + "\n"
+        else:
+            chart += symbole*values[i] + " "*(hight-values[i]) + "\n"
+    chart = chart[:-1]
+
+    return rotStringRect(chart)
 
