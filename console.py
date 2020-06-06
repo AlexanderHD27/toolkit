@@ -25,6 +25,23 @@ class colors:
         LIGHTBLUE = "\33[46m"
         WHITE = "\33[47m"
 
+def rotStringRect(string: str):
+    a = string.split("\n")
+    b = []
+
+    for j in range(len(a[0])):
+        b.append("")
+        for i in a:
+            b[j] += i[j]     
+    b.reverse()
+    c = ""
+    for i in b:
+        c = c + i + "\n"
+    c = c[:-1]
+    return c
+
+
+
 def getcolorInt(fg, bg):
     return "\33[38;5;" + str(fg) + "m" + "\33[48;5;" + str(bg) + "m"
 
