@@ -38,6 +38,13 @@ def cleanLine():
     sys.stdout.write("\033[K")
     sys.stdout.flush()  
 
+def cleanLines(n=1): 
+    for i in range(n): # pylint: disable=unused-variable
+        sys.stdout.write("\033[K")
+        sys.stdout.write("\33[{}A".format(1))
+    sys.stdout.flush()
+    moveCursorDown(n)
+
 def printLocation(x, y, text):
      sys.stdout.write("\x1b7\x1b[%d;%df%s\x1b8" % (x, y, text))
      sys.stdout.flush()
