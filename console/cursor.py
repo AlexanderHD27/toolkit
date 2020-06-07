@@ -38,11 +38,11 @@ def cleanLine():
     sys.stdout.write("\033[K")
     sys.stdout.flush()  
 
-def print_location(x, y, text):
+def printLocation(x, y, text):
      sys.stdout.write("\x1b7\x1b[%d;%df%s\x1b8" % (x, y, text))
      sys.stdout.flush()
 
-def hide_cursor():
+def hideCursor():
     if os.name == 'nt':
         ci = _CursorInfo()
         handle = ctypes.windll.kernel32.GetStdHandle(-11)
@@ -53,7 +53,7 @@ def hide_cursor():
         sys.stdout.write("\033[?25l")
         sys.stdout.flush()
 
-def show_cursor():
+def showCursor():
     if os.name == 'nt':
         ci = _CursorInfo()
         handle = ctypes.windll.kernel32.GetStdHandle(-11)

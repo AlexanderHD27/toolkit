@@ -24,7 +24,7 @@ class bg:
     LIGHTBLUE_BG = "\33[46m"
     WHITE_BG = "\33[47m"
 
-def getcolorInt(fg, bg):
+def getColorInt(fg, bg):
     return "\33[38;5;" + str(fg) + "m" + "\33[48;5;" + str(bg) + "m"
 
 def colored(text, fg, bg=BLACK):

@@ -84,7 +84,7 @@ def table(array: list, cellsize: int, style=1, direction=-1):
     
     return table
 
-def colortable(array: list, cellsize: int, selected: dict, style=1, direction=-1):
+def colorTable(array: list, cellsize: int, selected: dict, style=1, direction=-1):
     pass
 
     if type(array) != list:
@@ -182,7 +182,7 @@ def percent(summ, iteration, suffix="", prefix=""):
     sys.stdout.flush()
 
 
-def chartpiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=color.WHITE, colorMin=color.WHITE, colorZero=color.WHITE):
+def chartPiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=color.WHITE, colorMin=color.WHITE, colorZero=color.WHITE):
 
     if leaght <= 0:
         values = array.copy()
