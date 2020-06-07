@@ -268,7 +268,8 @@ def progressbar(summ, iteration, suffix="", prefix="", leaght=50):
     percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
     filledLength = int(leaght * iteration // summ)
     bar = "█" * filledLength + '-' * (leaght - filledLength)
-    print('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix), end = "\r")
+    sys.stdout.write('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix))
+    sys.stdout.flush()
 
 def statebar(summ, stat, suffix="", prefix="", leaght=50):
     filledLength = int(leaght * stat // summ)
@@ -279,11 +280,13 @@ def statebar(summ, stat, suffix="", prefix="", leaght=50):
     else:
         bar = "="*(filledLength-1) + "|" + '-' * (leaght - filledLength)
 
-    print('\r%s |%s| %s' % (suffix, bar, prefix), end = "\r")
+    sys.stdout.write('\r%s |%s| %s' % (suffix, bar, prefix))
+    sys.stdout.flush()
 
 def percent(summ, iteration, suffix="", prefix=""):
     percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
-    print('\r%s %s%% %s' % (suffix, percent, prefix), end = "\r")
+    sys.stdout.write('\r%s %s%% %s' % (suffix, percent, prefix))
+    sys.stdout.flush()
 
 
 def chartpiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=colors.WHITE, colorMin=colors.WHITE, colorZero=colors.WHITE):
