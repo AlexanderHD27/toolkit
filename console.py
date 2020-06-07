@@ -40,11 +40,13 @@ def rotStringRect(string: str):
     c = c[:-1]
     return c
 
+
 def getcolorInt(fg, bg):
     return "\33[38;5;" + str(fg) + "m" + "\33[48;5;" + str(bg) + "m"
 
 def colored(text, fg, bg=colors.bg.BLACK):
     return fg + bg + str(text) + colors.RESET 
+
 
 def table(array: list, cellsize: int, style=1, direction=-1):
 
@@ -185,6 +187,7 @@ def colortable(array: list, cellsize: int, selected: dict, style=1, direction=-1
     
     return table
 
+
 def progressbar(summ, iteration, suffix="", prefix="", leaght=50):
     percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
     filledLength = int(leaght * iteration // summ)
@@ -206,7 +209,8 @@ def percent(summ, iteration, suffix="", prefix=""):
     percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
     print('\r%s %s%% %s' % (suffix, percent, prefix), end = "\r")
 
-def chart(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=colors.WHITE, colorMin=colors.WHITE, colorZero=colors.WHITE):
+
+def chartpiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=colors.WHITE, colorMin=colors.WHITE, colorZero=colors.WHITE):
 
     if leaght <= 0:
         values = array.copy()
