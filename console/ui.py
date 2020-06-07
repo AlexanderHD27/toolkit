@@ -1,40 +1,5 @@
-import os
+import color
 import sys
-
-if os.name == 'nt':
-    import msvcrt
-    import ctypes
-
-    class _CursorInfo(ctypes.Structure):
-        _fields_ = [("size", ctypes.c_int),
-                    ("visible", ctypes.c_byte)]
-
-
-class colors:
-    RESET = "\33[0m"
-
-    BLACK = "\33[30m"
-    RED = "\33[31m"
-    GREEN = "\33[32m"
-    YELLOW = "\33[33m"
-    BLUE = "\33[34m"
-    PURPLE = "\33[35m" 
-    LIGHTBLUE = "\33[36m"
-    WHITE = "\33[37m"
-
-    BOLD = "\33[1m"    
-    UNDERLINE = "\33[4m"
-    INVERTED = "\33[7m"
-
-    class bg:
-        BLACK = "\33[40m"
-        RED = "\33[41m"
-        GREEN = "\33[42m"
-        YELLOW = "\33[43m"
-        BLUE = "\33[44m"
-        PURPLE = "\33[45m" 
-        LIGHTBLUE = "\33[46m"
-        WHITE = "\33[47m"
 
 def rotStringRect(string: str):
     a = string.split("\n")
@@ -50,78 +15,6 @@ def rotStringRect(string: str):
         c = c + i + "\n"
     c = c[:-1]
     return c
-
-
-# - Clear the screen, move to (0,0):
-# \033[2J
-# - Erase to end of line:
-# \033[K
-
-# - Save cursor position:
-# \033[s
-# - Restore cursor position:
-# \033[u
-
-def moveCursor(x, y):
-    sys.stdout.write("\33[{};{}H".format(y, x))
-    sys.stdout.flush()
-
-def moveCursorUp(n=1):
-    sys.stdout.write("\33[{}A".format(n))
-    sys.stdout.flush()
-
-def moveCursorDown(n=1):
-    sys.stdout.write("\33[{}B".format(n))
-    sys.stdout.flush()  
-
-def moveCursorFor(n=1):
-    sys.stdout.write("\33[{}C".format(n))
-    sys.stdout.flush()  
-
-def moveCursorBack(n=1):
-    sys.stdout.write("\33[{}D".format(n))
-    sys.stdout.flush()  
-
-def cleanAll():
-    sys.stdout.write("\33[2J")
-    sys.stdout.flush()  
-
-def cleanLine():
-    sys.stdout.write("\033[K")
-    sys.stdout.flush()  
-
-def print_location(x, y, text):
-     sys.stdout.write("\x1b7\x1b[%d;%df%s\x1b8" % (x, y, text))
-     sys.stdout.flush()
-
-def hide_cursor():
-    if os.name == 'nt':
-        ci = _CursorInfo()
-        handle = ctypes.windll.kernel32.GetStdHandle(-11)
-        ctypes.windll.kernel32.GetConsoleCursorInfo(handle, ctypes.byref(ci))
-        ci.visible = False
-        ctypes.windll.kernel32.SetConsoleCursorInfo(handle, ctypes.byref(ci))
-    elif os.name == 'posix':
-        sys.stdout.write("\033[?25l")
-        sys.stdout.flush()
-
-def show_cursor():
-    if os.name == 'nt':
-        ci = _CursorInfo()
-        handle = ctypes.windll.kernel32.GetStdHandle(-11)
-        ctypes.windll.kernel32.GetConsoleCursorInfo(handle, ctypes.byref(ci))
-        ci.visible = True
-        ctypes.windll.kernel32.SetConsoleCursorInfo(handle, ctypes.byref(ci))
-    elif os.name == 'posix':
-        sys.stdout.write("\033[?25h")
-        sys.stdout.flush()
-
-
-def getcolorInt(fg, bg):
-    return "\33[38;5;" + str(fg) + "m" + "\33[48;5;" + str(bg) + "m"
-
-def colored(text, fg, bg=colors.bg.BLACK):
-    return fg + bg + str(text) + colors.RESET 
 
 
 def table(array: list, cellsize: int, style=1, direction=-1):
@@ -236,7 +129,7 @@ def colortable(array: list, cellsize: int, selected: dict, style=1, direction=-1
         for y in range(len(array[x])):
             if (x, y) in selected.keys():
                 table = table + selected.get((x, y))
-            table = table + str(array[x][y]).ljust(cellsize)[:cellsize] + colors.RESET
+            table = table + str(array[x][y]).ljust(cellsize)[:cellsize] + color.RESET
             if style == 1:
                 table = table + " "
             elif style == 2:
@@ -289,7 +182,7 @@ def percent(summ, iteration, suffix="", prefix=""):
     sys.stdout.flush()
 
 
-def chartpiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=colors.WHITE, colorMin=colors.WHITE, colorZero=colors.WHITE):
+def chartpiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=color.WHITE, colorMin=color.WHITE, colorZero=color.WHITE):
 
     if leaght <= 0:
         values = array.copy()
@@ -330,16 +223,16 @@ def chartpiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styl
             if not rotated:
                 if i > 0:
                     if i > positive:
-                        chart.append(colorPos + " "*negative + " "*zero + "█"*positive + colors.RESET)
+                        chart.append(colorPos + " "*negative + " "*zero + "█"*positive + color.RESET)
                     else:
-                        chart.append(colorPos + " "*negative + " "*zero + "█"*i + " "*(positive-i) + colors.RESET)
+                        chart.append(colorPos + " "*negative + " "*zero + "█"*i + " "*(positive-i) + color.RESET)
                 elif i == 0:
-                    chart.append(colorZero + " "*negative + "█"*zero + " "*positive + colors.RESET)
+                    chart.append(colorZero + " "*negative + "█"*zero + " "*positive + color.RESET)
                 elif i < 0: 
                     if i < negative*-1:
-                        chart.append(colorMin + "█"*negative + " "*zero + " "*positive + colors.RESET)
+                        chart.append(colorMin + "█"*negative + " "*zero + " "*positive + color.RESET)
                     else: 
-                        chart.append(colorMin + " "*(negative-abs(i)) + "█"*abs(i) + " "*zero + " "*positive + colors.RESET)
+                        chart.append(colorMin + " "*(negative-abs(i)) + "█"*abs(i) + " "*zero + " "*positive + color.RESET)
 
             else:
                 if i > 0:
@@ -369,11 +262,11 @@ def chartpiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styl
 
         for i in range(len(chart)):
             if valueMap[i] > 0:
-                chart[i] = colorPos + chart[i] + colors.RESET
+                chart[i] = colorPos + chart[i] + color.RESET
             elif valueMap[i] == 0:
-                chart[i] = colorZero + chart[i] + colors.RESET
+                chart[i] = colorZero + chart[i] + color.RESET
             elif valueMap[i] < 0:
-                chart[i] = colorMin + chart[i] + colors.RESET
+                chart[i] = colorMin + chart[i] + color.RESET
         
         if styleBoarder == 0:
             numberleaght = 0
