@@ -181,7 +181,6 @@ def percent(summ, iteration, suffix="", prefix=""):
     sys.stdout.write('\r%s %s%% %s' % (suffix, percent, prefix))
     sys.stdout.flush()
 
-
 def chartPiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=color.WHITE, colorMin=color.WHITE, colorZero=color.WHITE):
 
     if leaght <= 0:
@@ -299,3 +298,4 @@ def chartPiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styl
             chartString += i + "\n"
 
     return chartString
+
