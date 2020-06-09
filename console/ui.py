@@ -1,4 +1,4 @@
-import color
+from console import color # pylint: fisable=import-error
 import sys
 
 def rotStringRect(string: str):
@@ -299,3 +299,95 @@ def chartPiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styl
 
     return chartString
 
+def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
+    values = array.copy()
+    valueMap = []
+    chart = ""
+
+    n = start
+    for i in range(hight+1):  
+        valueMap.append(n)
+        n += step 
+
+    for i in range(len(values)):            
+        if values[i] <= valueMap[0]:
+            values[i] = -1
+        elif values[i] > valueMap[-1]:
+            values[i] = len(valueMap)
+        else:
+            for j in range(len(valueMap)):
+                if j != 0 and valueMap[j-1] < values[i] and valueMap[j] >= values[i]:
+                    values[i] = j
+                    break
+                
+                elif j == 0 and valueMap[j] == values[i]:
+                    values[i] = j
+                    break
+
+    for i in range(len(values)): 
+            if i != 0:
+
+                # Overflow + last obverflow
+                if (values[i] < 0 and values[i-1] < 0) or (values[i] > len(valueMap) and values[i-1] > len(valueMap)):
+                    chart += " "*hight + "\n"
+
+                # Same
+                elif values[i] == values[i-1]:
+                    chart += " "*(values[i]-1) + "─" + " "*(hight-values[i]) + "\n"
+
+                # Overflow
+                elif values[i] < 0:
+                    chart += "│"*(values[i-1]-1) + "╮" + " "*(hight-values[i-1]) + "\n"
+
+                elif values[i] > len(valueMap)-1:
+                    chart += " "*(values[i-1]-1) + "╯" + "│"*(hight-values[i-1]) + "\n"
+
+                # Last overflow
+                elif values[i-1] < 0:
+                    chart += "│"*(values[i]-1) + "╭" + " "*(hight-values[i]) + "\n"
+
+                elif values[i-1] > len(valueMap):
+                    print(1)
+                    chart += " "*(values[i]-1) + "╰" + "│"*(hight-values[i]) + "\n"
+
+                elif values[i-1] > 0 and values[i] == 0:
+                    chart += " "*(values[i]-1) + "─" + " "*(hight-values[i]) + "\n"
+
+                # Normal
+                elif values[i] > values[i-1]:
+                    chart += " "*(values[i-1]-1) + "╯" + "│"*(values[i]-values[i-1]-1) + "╭" + " "*(hight-values[i]) + "\n"
+
+                elif values[i] < values[i-1]:
+                    chart += " "*(values[i]-1) + "╰" + "│"*(values[i-1]-values[i]-1) + "╮" + " "*(hight-values[i-1]) + "\n"
+
+            else:
+                if values[i] <= 0 or values[i] > len(valueMap):
+                    chart += " "*hight + "\n"
+                else: 
+                    chart += " "*(values[i]-1) + "─" + " "*(hight-values[i]) + "\n"
+    
+
+    chart = rotStringRect(chart[:-1])
+    chart = chart.split("\n")
+
+    leaght = 0
+    for i in valueMap:
+        if len("{: f}".format(i)) > leaght:
+            leaght = len("{: f}".format(i)) - numberCap
+    
+    valueMap.reverse()
+
+    for i in range(len(chart)):
+        if numberCap > 0:
+            chart[i] = "{: f}".format(valueMap[i]).ljust(leaght)[:-numberCap] + " ┤" + chart[i] + "│"
+        else:
+            chart[i] = "{: f}".format(valueMap[i]).ljust(leaght) + " ┤" + chart[i] + "│"
+
+    charttext = ""
+    for i in chart:
+        charttext += i + "\n"
+    chart = charttext
+
+    chart += " "*leaght + " └" + "─"*len(values) + "┘"
+    chart =  " "*leaght + " ┌" + "─"*len(values) + "┐\n" + chart
+    return chart
