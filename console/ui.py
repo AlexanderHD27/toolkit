@@ -1,4 +1,4 @@
-from console import color # pylint: fisable=import-error
+from console import color # pylint: disable=import-error
 import sys
 
 def rotStringRect(string: str):
@@ -15,7 +15,6 @@ def rotStringRect(string: str):
         c = c + i + "\n"
     c = c[:-1]
     return c
-
 
 def table(array: list, cellsize: int, style=1, direction=-1):
 
@@ -297,7 +296,6 @@ def chartPiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styl
         for i in chart:
             chartString += i + "\n"
 
-    return chartString
 
 def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
     values = array.copy()
@@ -346,8 +344,7 @@ def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
                 elif values[i-1] < 0:
                     chart += "│"*(values[i]-1) + "╭" + " "*(hight-values[i]) + "\n"
 
-                elif values[i-1] > len(valueMap):
-                    print(1)
+                elif values[i-1] > len(valueMap)-1:
                     chart += " "*(values[i]-1) + "╰" + "│"*(hight-values[i]) + "\n"
 
                 elif values[i-1] > 0 and values[i] == 0:
@@ -361,7 +358,7 @@ def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
                     chart += " "*(values[i]-1) + "╰" + "│"*(values[i-1]-values[i]-1) + "╮" + " "*(hight-values[i-1]) + "\n"
 
             else:
-                if values[i] <= 0 or values[i] > len(valueMap):
+                if values[i] <= 0 or values[i] > len(valueMap)-1:
                     chart += " "*hight + "\n"
                 else: 
                     chart += " "*(values[i]-1) + "─" + " "*(hight-values[i]) + "\n"
@@ -379,9 +376,9 @@ def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
 
     for i in range(len(chart)):
         if numberCap > 0:
-            chart[i] = "{: f}".format(valueMap[i]).ljust(leaght)[:-numberCap] + " ┤" + chart[i] + "│"
+            chart[i] = "{: f}".format(valueMap[i])[:-numberCap] .rjust(leaght)+ " ┤" + chart[i] + "│"
         else:
-            chart[i] = "{: f}".format(valueMap[i]).ljust(leaght) + " ┤" + chart[i] + "│"
+            chart[i] = "{: f}".format(valueMap[i]).rjust(leaght) + " ┤" + chart[i] + "│"
 
     charttext = ""
     for i in chart:
