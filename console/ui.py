@@ -181,11 +181,19 @@ def percent(summ, iteration, suffix="", prefix=""):
     sys.stdout.flush()
 
 def chartPiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=color.WHITE, colorMin=color.WHITE, colorZero=color.WHITE):
+def update(text):
+    for i in range(len(text)): # pylint: disable=unused-variable
+        sys.stdout.write("\033[A\033[K")
+    printUpdate(text)
+    #for i in range(len(text)): # pylint: disable=unused-variable
+     #   sys.stdout.write("\033[B")
+    #sys.stdout.write(text)
+    sys.stdout.flush()
 
-    if leaght <= 0:
-        values = array.copy()
-    else:
-        values = array[:leaght].copy()
+def printUpdate(text):
+    for i in text.split("\n"):
+        sys.stdout.write(i + "\n")
+    sys.stdout.flush()
 
     highest = valuerange[1]
     lowest = valuerange[0]
