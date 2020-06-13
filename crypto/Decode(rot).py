@@ -44,5 +44,23 @@ def bruteforceing_crypto (text=l_text):
 
 
 def intelligentforcing_crypto ( text=l_text, language=0, manual_avable_letters=-1 ):
+    b = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"))]
     print(text)
-    
+    a = []
+    a+=text
+    n = 0
+    ab = []
+    while n < len(b):
+        aa = str(a.count(b[n]))
+        n+=1
+        ab += aa
+
+    print(a, "\n")
+    print([i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"))])
+    print(ab)
+    a_ab = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890   "))]
+    a_ab += ab
+    a_ab = str(a_ab)
+    with open("file2.txt", "w") as f:
+        f.write(str(a_ab ))
+intelligentforcing_crypto("aegaurihnilhöuehneoapihunet79uqpnhtopuhrgpegöamurh")
