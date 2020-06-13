@@ -1,6 +1,15 @@
 import socket
 import threading
 
+def recvall(sock, BUFF_SIZE = 2048):
+        data = b""
+        while True:
+            part = sock.recv(BUFF_SIZE)
+            data += part
+            if len(part) < BUFF_SIZE:
+                break
+        return data   
+
 class Client:
 
     def __init__(self, host, port):
