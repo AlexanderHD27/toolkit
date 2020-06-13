@@ -288,3 +288,25 @@ def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
     chart += " "*leaght + " └" + "─"*len(values) + "┘"
     chart =  " "*leaght + " ┌" + "─"*len(values) + "┐\n" + chart
     return chart
+
+
+def XYview(cursor: tuple, points: list, leath: int, wight: int):
+    text = "┌" + "──"*wight + "┐\n"
+
+    for y in range(leath):
+        text += "│" 
+        for x in range(wight):
+            if cursor == (x, y):
+                text += "O "
+            elif cursor[0] == x:
+                text += "| "
+            elif cursor[1] == y:
+                text += "--"
+            elif (x, y) in points:
+                text += "X "
+            else:
+                text += "  "
+
+        text += "│\n" 
+    return text + "└" + "──"*wight + "┘\n"
+
