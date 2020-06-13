@@ -1,12 +1,11 @@
 l_text = """programm proof 1234567890ß!"§$%&/()=?@+*~#'-_.:,;"""
 l_sed = 1
 def encotion (a, text, encode_level):
-    z = len(a) - 1
-    while z > 0:
-        z =z-1
-        text = text.replace(a[z], a[z + encode_level])
-        print(text)
-    return text
+    v_text = ""
+    for i in text:
+        if i in a:
+            v_text += a[(a.index(i) + encode_level) % len(a)]
+    return v_text
 
 def encode ( text=l_text, encode_level=1, sed=l_sed ):
     l_text = text
@@ -32,4 +31,4 @@ def encode ( text=l_text, encode_level=1, sed=l_sed ):
        n_text = encotion(a, text, encode_level)
     print(a)
     print(n_text)
-encode()
+encode("Hallo", -4, 3)
