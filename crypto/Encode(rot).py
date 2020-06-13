@@ -31,4 +31,4 @@ def encode ( text=l_text, encode_level=1, sed=l_sed ):
        n_text = encotion(a, text, encode_level)
     print(a)
     print(n_text)
-encode("Hallo", -4, 3)
+encode("hallo", -4, 1)
