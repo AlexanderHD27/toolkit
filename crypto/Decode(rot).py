@@ -35,9 +35,9 @@ def bruteforceing_crypto (text=l_text):
         n_text = str(encotion(a, text, n))
         n += 1
         alle.append( n_text)
-    print(alle)
     with open("file.txt", "w") as f:
         f.write(str(alle))
+    return(alle)
 
 
 
@@ -63,7 +63,7 @@ def intelligentforcing_crypto ( text=l_text, language=0, manual_avable_letters=-
     a_ab = str(a_ab)
     with open("file2.txt", "w") as f:
         f.write(str(a_ab ))
-    
+
 
 
 intelligentforcing_crypto("aegaurihnilhöuehneoapihunet79uqpnhtopuhrgpegöamurh")
