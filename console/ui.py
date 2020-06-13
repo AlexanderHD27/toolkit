@@ -16,6 +16,7 @@ def rotStringRect(string: str):
     c = c[:-1]
     return c
 
+
 def table(array: list, cellsize: int, style=1, direction=-1):
 
     if type(array) != list:
@@ -180,7 +181,7 @@ def percent(summ, iteration, suffix="", prefix=""):
     sys.stdout.write('\r%s %s%% %s' % (suffix, percent, prefix))
     sys.stdout.flush()
 
-def chartPiller(array: list, hight: int, valuerange: (int, int), leaght=-1, styleGraph=0, styleBoarder=0, rotated=True, colorPos=color.WHITE, colorMin=color.WHITE, colorZero=color.WHITE):
+
 def update(text):
     for i in range(len(text)): # pylint: disable=unused-variable
         sys.stdout.write("\033[A\033[K")
