@@ -40,7 +40,6 @@ def bruteforceing_crypto (text=l_text):
         f.write(str(alle))
 
 
-bruteforceing_crypto()
 
 
 
