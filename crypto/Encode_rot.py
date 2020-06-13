@@ -30,5 +30,3 @@ def encode ( text=l_text, encode_level=1, sed=l_sed ):
        encotion(a, text, encode_level)
        n_text = encotion(a, text, encode_level)
     return(n_text)
-a = encode("dies ist ein sehr sehr langer Text als Test für meine Programme eeeeeeeeeeeee", 3, 4)
-print(a)
