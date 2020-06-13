@@ -63,4 +63,7 @@ def intelligentforcing_crypto ( text=l_text, language=0, manual_avable_letters=-
     a_ab = str(a_ab)
     with open("file2.txt", "w") as f:
         f.write(str(a_ab ))
+    
+
+
 intelligentforcing_crypto("aegaurihnilhöuehneoapihunet79uqpnhtopuhrgpegöamurh")
