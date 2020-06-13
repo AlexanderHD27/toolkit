@@ -1,3 +1,4 @@
+from crypto import Encode_rot
 l_text = """dwhhk"""
 
 
@@ -49,21 +50,21 @@ def intelligentforcing_crypto ( text=l_text, language=0, manual_avable_letters=-
     a = []
     a+=text
     n = 0
-    ab = []
-    while n < len(b):
-        aa = str(a.count(b[n]))
-        n+=1
-        ab += aa
+    ab = {}
+    for n in b:
+        ab.update({n:a.count(n)})
 
-    print(a, "\n")
-    print([i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"))])
     print(ab)
     a_ab = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890   "))]
     a_ab += ab
     a_ab = str(a_ab)
     with open("file2.txt", "w") as f:
         f.write(str(a_ab ))
+    biggest = list(ab.values()).index(sorted(list(ab.values()))[-1])
+    print(biggest)
+    big_difference = 4-biggest
+    print(big_difference)
+    returne = Encode_rot.encode(text, big_difference, 4)
+    print(returne)
 
-
-
-intelligentforcing_crypto("aegaurihnilhöuehneoapihunet79uqpnhtopuhrgpegöamurh")
+intelligentforcing_crypto("glhvlvwhlqvhkuvhkuodqjhuWhAwdovWhvwiuphlqhSurjudpphh")
