@@ -29,5 +29,4 @@ def encode ( text=l_text, encode_level=1, sed=l_sed ):
        a = [i[0] for i in list(zip(sed))]
        encotion(a, text, encode_level)
        n_text = encotion(a, text, encode_level)
-    print(a)
-    print(n_text)
+    return(n_text)
