@@ -45,3 +45,4 @@ def bruteforceing_crypto (text=l_text):
 
 def intelligentforcing_crypto ( text=l_text, language=0, manual_avable_letters=-1 ):
     print(text)
+    
