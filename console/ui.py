@@ -1,4 +1,4 @@
-from console import color
+from toolkit.console import color # pylint: disable=import-error
 import sys
 
 def rotStringRect(string: str):
@@ -310,3 +310,4 @@ def XYview(cursor: tuple, points: list, leath: int, wight: int):
         text += "│\n" 
     return text + "└" + "──"*wight + "┘\n"
 
+def tree(view)
