@@ -1,4 +1,4 @@
-from console import color # pylint: disable=import-error
+from toolkit.console import color # pylint: disable=import-error
 import sys
 
 def rotStringRect(string: str):
