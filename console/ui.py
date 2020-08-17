@@ -299,9 +299,9 @@ def XYview(cursor: tuple, points: list, leath: int, wight: int):
             if cursor == (x, y):
                 text += "O "
             elif cursor[0] == x:
-                text += "| "
+                text += "│ "
             elif cursor[1] == y:
-                text += "--"
+                text += "──"
             elif (x, y) in points:
                 text += "X "
             else:
@@ -309,4 +309,3 @@ def XYview(cursor: tuple, points: list, leath: int, wight: int):
 
         text += "│\n" 
     return text + "└" + "──"*wight + "┘\n"
-
