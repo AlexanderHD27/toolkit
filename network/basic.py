@@ -39,6 +39,7 @@ class Server:
         self.sock.bind(self.address)
 
         self.running = True
+        self.deamon = True
         self.conmThreads = []
         self.handlerThread = None
 
@@ -50,11 +51,13 @@ class Server:
             conn, addr = self.sock.accept()
             self.connections.update({addr: conn})
             process = threading.Thread(target=handler, args=[conn, addr, args])
+            process.setDaemon(self.deamon)
             process.start()
             self.conmThreads.append(process)
 
     def start(self, handler, args):
         self.handlerThread = threading.Thread(target=self.handel, args=[self, handler, args])
+        self.handlerThread.setDaemon(self.deamon)
         self.handlerThread.start()
 
     def stop(self):
