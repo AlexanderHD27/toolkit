@@ -16,6 +16,7 @@ A collection of packages / tools for Python
  > ### Networking
  > * basic a basic multi client TCP-Server
  > * A simple TCP-proxy
+ > * RSA powered semi secure communication
  
  > ### Tools
  > * hex 2 bin converter
