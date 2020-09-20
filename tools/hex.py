@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import struct
 import sys
 
@@ -27,7 +28,6 @@ except ValueError:
     sys.stderr.write("\"{}\" is not hex!\n".format(i))
     sys.stderr.flush()
     exit(1)
-
 
 for i in hex_data:
     sys.stdout.buffer.write(struct.pack("<H", i))

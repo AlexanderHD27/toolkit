@@ -1,6 +1,4 @@
-from crypto import Encode_rot
-l_text = """dwhhk"""
-
+l_sed = 1
 
 def encotion (a, text, encode_level):
     v_text = ""
@@ -9,8 +7,29 @@ def encotion (a, text, encode_level):
             v_text += a[(a.index(i) + encode_level) % len(a)]
     return v_text
 
+def encode ( text, encode_level=1, sed=l_sed ):
+    if sed==1 :
+        a = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyz"))]
+        n_text=encotion(a, text, encode_level)
+    elif sed==2 :
+        a = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyz1234567890"))]
+        encotion(a, text, encode_level)
+        n_text = encotion(a, text, encode_level)
+    elif sed==3 :
+        a = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"))]
+        encotion(a, text, encode_level)
+        n_text = encotion(a, text, encode_level)
+    elif sed==4 :
+        a = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"))]
+        encotion(a, text, encode_level)
+        n_text = encotion(a, text, encode_level)
+    else :
+       a = [i[0] for i in list(zip(sed))]
+       encotion(a, text, encode_level)
+       n_text = encotion(a, text, encode_level)
+    return(n_text)
 
-def bruteforceing_crypto (text=l_text):
+def bruteforceing_crypto (text):
     alle = []
     n = 0
     a = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyz"))]
@@ -40,11 +59,7 @@ def bruteforceing_crypto (text=l_text):
         f.write(str(alle))
     return(alle)
 
-
-
-
-
-def intelligentforcing_crypto ( text=l_text, language=0, debugg_Level=1, manual_avable_letters=-1 ):
+def intelligentforcing_crypto ( text, language=0, debugg_Level=1, manual_avable_letters=-1 ):
     b = [i[0] for i in list(zip("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"))]
     a = []
     a+=text
@@ -60,5 +75,6 @@ def intelligentforcing_crypto ( text=l_text, language=0, debugg_Level=1, manual_
             f.write(str(a_ab ))
     biggest = list(ab.values()).index(sorted(list(ab.values()))[-1])
     big_difference = 4-biggest
-    returne = Encode_rot.encode(text, big_difference, 4)
+    returne = encode(text, big_difference, 4)
     return(ab, returne)
+

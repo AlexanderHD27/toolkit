@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-import os
 import sys
+import os
 
 if len(sys.argv) < 2:
     sys.stderr.write("Usage: <file> [<format>] [<loader>]\n")
