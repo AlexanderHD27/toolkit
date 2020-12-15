@@ -160,27 +160,27 @@ def colorTable(array: list, cellsize: int, selected: dict, style=1, direction=-1
     return table
 
 
-def progressbar(summ, iteration, suffix="", prefix="", leaght=50):
-    percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
-    filledLength = int(leaght * iteration // summ)
-    bar = "█" * filledLength + '-' * (leaght - filledLength)
+def progressbar(sum, iteration, suffix="", prefix="", length=50):
+    percent = ("{0:." + str(1) + "f}").format(100 * (iteration / sum))
+    filledLength = int(length * iteration // sum)
+    bar = "█" * filledLength + '-' * (length - filledLength)
     sys.stdout.write('\r%s |%s| %s%% %s' % (suffix, bar, percent, prefix))
     sys.stdout.flush()
 
-def statebar(summ, stat, suffix="", prefix="", leaght=50):
-    filledLength = int(leaght * stat // summ)
+def statebar(sum, stat, suffix="", prefix="", length=50):
+    filledLength = int(length * stat // sum)
     if filledLength == 0:
-        bar = "|" + '-' * (leaght - filledLength)
-    elif filledLength > leaght:
-        bar = "-"*leaght
+        bar = "|" + '-' * (length - filledLength)
+    elif filledLength > length:
+        bar = "-"*length
     else:
-        bar = "="*(filledLength-1) + "|" + '-' * (leaght - filledLength)
+        bar = "="*(filledLength-1) + "|" + '-' * (length - filledLength)
 
     sys.stdout.write('\r%s |%s| %s' % (suffix, bar, prefix))
     sys.stdout.flush()
 
-def percent(summ, iteration, suffix="", prefix=""):
-    percent = ("{0:." + str(1) + "f}").format(100 * (iteration / summ))
+def percent(sum, iteration, suffix="", prefix=""):
+    percent = ("{0:." + str(1) + "f}").format(100 * (iteration / sum))
     sys.stdout.write('\r%s %s%% %s' % (suffix, percent, prefix))
     sys.stdout.flush()
 
@@ -228,7 +228,7 @@ def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
     for i in range(len(values)): 
             if i != 0:
 
-                # Overflow + last obverflow
+                # Overflow + last overflow
                 if (values[i] < 0 and values[i-1] < 0) or (values[i] > len(valueMap) and values[i-1] > len(valueMap)):
                     chart += " "*hight + "\n"
 
@@ -270,33 +270,33 @@ def chartLines(array: list, hight: int, start: int, step: int, numberCap=-1):
     chart = rotStringRect(chart[:-1])
     chart = chart.split("\n")
 
-    leaght = 0
+    length = 0
     for i in valueMap:
-        if len("{: f}".format(i)) > leaght:
-            leaght = len("{: f}".format(i)) - numberCap
+        if len("{: f}".format(i)) > length:
+            length = len("{: f}".format(i)) - numberCap
     
     valueMap.reverse()
 
     for i in range(len(chart)):
         if numberCap > 0:
-            chart[i] = "{: f}".format(valueMap[i])[:-numberCap] .rjust(leaght)+ " ┤" + chart[i] + "│"
+            chart[i] = "{: f}".format(valueMap[i])[:-numberCap] .rjust(length)+ " ┤" + chart[i] + "│"
         else:
-            chart[i] = "{: f}".format(valueMap[i]).rjust(leaght) + " ┤" + chart[i] + "│"
+            chart[i] = "{: f}".format(valueMap[i]).rjust(length) + " ┤" + chart[i] + "│"
 
     charttext = ""
     for i in chart:
         charttext += i + "\n"
     chart = charttext
 
-    chart += " "*leaght + " └" + "─"*len(values) + "┘"
-    chart =  " "*leaght + " ┌" + "─"*len(values) + "┐\n" + chart
+    chart += " "*length + " └" + "─"*len(values) + "┘"
+    chart =  " "*length + " ┌" + "─"*len(values) + "┐\n" + chart
     return chart
 
 
-def XYview(cursor: tuple, points: list, leath: int, wight: int):
+def XYView(cursor: tuple, points: list, length: int, wight: int):
     text = "┌" + "──"*wight + "┐\n"
 
-    for y in range(leath):
+    for y in range(length):
         text += "│" 
         for x in range(wight):
             if cursor == (x, y):

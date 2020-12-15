@@ -18,7 +18,7 @@ class bg:
     BLACK_BG = "\33[40m"
     RED_BG = "\33[41m"
     GREEN_BG = "\33[42m"
-    YELLOWBG = "\33[43m"
+    YELLOW_BG = "\33[43m"
     BLUE_BG = "\33[44m"
     PURPLE_BG = "\33[45m" 
     LIGHTBLUE_BG = "\33[46m"
