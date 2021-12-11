@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+   
+    <style>
+        div {
+            outline-color: red;
+            outline-width: 5px;
+            outline-style: none;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            
+            flex-direction: row;
+
+            width: 100%;
+            height: 100%;
+        }
+
+        .main-container > div {
+            flex-grow: 2;
+            width: 100%;
+            margin: 1%;
+        }
+
+        .file-input {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-input > * {
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            display: grid;
+            grid-template-columns: 1fr 4fr;
+            padding: 10px;
+            
+            border-radius: 2px;
+            border-color: black;
+            border-style: solid;
+        }
+
+        .pattern-view {
+            padding: 10px;
+            
+            border-radius: 2px;
+            border-color: black;
+            border-style: solid;
+            margin-bottom: 20px;
+        }
+
+        .pattern-view-element {
+            display: grid;
+            grid-template-columns: repeat(4, 3fr) 1fr;
+        }
+
+        .download-field {
+            display: flex;
+            flex-direction: row;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class=main-container>
+        <div class=filter-input>
+            <h1>Bearbeitung Configuration</h1>
+           
+            <div class=pattern-view id=pattern-view onload="render_Patterns();">
+
+            </div>
+
+            <div class=input-field>
+                <p>Such Ziel</p>
+                <input type="text" id=search-in>
+                <p>Such Spalte</p>
+                <input type="text" id=search-col-in>
+                <p>Ersetzung Ziel</p>
+                <input type="text" id=replace-in>
+                <p>Ersetzung Spalte</p >
+                <input type="text" id=replace-col-in>
+                <button style="padding: 5px; " onclick="on_newFilter();">Muster Hinzufügen</button>
+            </div>
+            <button style="width: 100%; height: 5%; margin-top: 20px;" onclick="do_replacement();">Bearbeite!</button>
+
+        </div>
+        <div class=file-input>
+            <h1>Datei Ansicht</h1>
+
+            <textarea cols="30" rows="50" id=file-content readonly></textarea>
+            <input type="file" id=file-input-choice>
+            <button onclick="loadFile();">Datei Neu Laden</button>
+            <div class="download-field" id="download-field">
+                <button onclick="saveFile();" style="flex-grow: 2;"> bearbeitete Datei speichern </button>
+                <a id="download-link" style="margin-left: 10px; flex-grow: 1;"></a>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="color: gray;">
+        von AlexanderHD27 (<a style="color: gray;" href="https://github.com/AlexanderHD27/toolkit">https://github.com/AlexanderHD27/toolkit</a>)
+    </div>
+
+</body>
+<script>
+
+    patterns = [];
+    col_name_map = [];
+    csv_data = [];
+
+    function get_col_name_by_index(i) {
+        var col = col_name_map.find(({index}) => index == i);
+        if(col === undefined) {
+            console.log(i, col);
+        }
+        return col.name;
+    }
+
+    function get_col_index_by_name(n) {
+        var col = col_name_map.find(({name}) => name == n);
+        if(col === undefined) {
+            console.log(n, col);
+            alert(`Die Spalte ${i} konnte nicht gefunden!`)
+        }
+        return col.index
+    }
+
+
+    function parseCSV(str) {
+        var arr = [];
+        var quote = false;
+        for (var row = col = c = 0; c < str.length; c++) {
+            var cc = str[c], nc = str[c+1];
+            arr[row] = arr[row] || [];
+            arr[row][col] = arr[row][col] || '';
+            
+            if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+            if (cc == '"') { quote = !quote; continue; }
+            if (cc == ',' && !quote) { ++col; continue; }
+            if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+            
+            arr[row][col] += cc;
+        }
+
+        for (var i = 0; i<arr.length; i++) {
+            for (var j = 0; j<arr[i].length; j++)   { 
+                arr[i][j] = arr[i][j].trim()
+            }
+        }
+
+        return arr;
+    }
+
+    function exportCSV(data) {
+        var res = "";
+        for (row of data) {
+            for (col of row) {
+                if (col.trim().length > 0) {res = res + `"${col}",`}
+                else {res = res + ","}
+            }
+            res = res.slice(0, -1) + "\r\n"
+        }
+        console.log(data);
+        return res;
+    }
+
+
+    function replace(pattern_list, data) {
+        var patterns = pattern_list
+        patterns.sort((a,b) => (a.search.length > b.search.length) ? 1 : ((b.search.length > a.search.length) ? -1 : 0))
+        var data_in = data
+        var data_res = data
+
+
+        for (pattern of pattern_list) {
+            for (var row = 1; row < data.length; row++) {
+                search_pattern_str = pattern.search
+                if(data_in[row][pattern.search_col].trim().substr(0, search_pattern_str.length) == search_pattern_str) {
+                    data_res[row][pattern.replace_col] = pattern.replace;
+                }
+            }
+        }
+
+        return data_res
+    }
+
+    function render_Patterns() {
+        const filter_view = document.getElementById("pattern-view");
+        filter_view.innerHTML = "";
+        
+        var i = 0;
+        for (pattern of patterns) {
+            var new_element = document.createElement("div")
+            new_element.className = "pattern-view-element";
+            
+            var search_p = document.createElement("p");
+            var search_col_p = document.createElement("p");
+            var replace_p = document.createElement("p");
+            var replace_col_p = document.createElement("p");
+            
+            var button = document.createElement("button");
+            button.index_value = i;
+            button.id = `Pattern-Element-${i}`;
+            button.onclick = on_deleteFilter;
+            button.innerHTML = "X"
+
+            search_p.appendChild(document.createTextNode(`${pattern.search}`));
+            search_col_p.appendChild(document.createTextNode(`${get_col_name_by_index(pattern.search_col)}`));
+            replace_p.appendChild(document.createTextNode(`${pattern.replace}`));
+            replace_col_p.appendChild(document.createTextNode(`${get_col_name_by_index(pattern.replace_col)}`));
+
+            new_element.appendChild(search_p);
+            new_element.appendChild(search_col_p);
+            new_element.appendChild(replace_p);
+            new_element.appendChild(replace_col_p);
+            new_element.appendChild(button);
+            filter_view.appendChild(new_element);
+            i++;
+        }
+    }
+
+    
+    function on_deleteFilter() {
+        patterns.splice(document.getElementById(event.srcElement.id).index_value, 1);
+        render_Patterns();
+    }
+
+    function on_newFilter() {
+
+        var new_filter = {
+            search: document.getElementById("search-in").value,
+            search_col: get_col_index_by_name(document.getElementById("search-col-in").value),
+            replace: document.getElementById("replace-in").value,
+            replace_col: get_col_index_by_name(document.getElementById("replace-col-in").value),
+        }
+
+        patterns.push(new_filter);
+        console.log(patterns);
+        render_Patterns();
+    }
+
+    function do_replacement() {
+        csv_data = replace(patterns, csv_data);
+        document.getElementById("file-content").value = exportCSV(csv_data);
+    }
+
+
+    function loadFile() {        
+        var files = file_input_element.files;
+        if(files.length == 0) return;
+
+        var reader =  new FileReader();
+        reader.onload = (e) => {
+            csv_data = parseCSV(e.target.result.split(/\r\n|\n/).join('\n'));
+            
+            col_name_map = [];
+            for(var i=0; i<csv_data[0].length; i++) {
+                col_name_map.push({name: csv_data[0][i], index: i});
+            }
+            console.log(col_name_map);
+            document.getElementById("file-content").value = exportCSV(csv_data);
+        }
+
+        reader.onerror = (e) => alert(`Ein Fehler ist während des lesens der Datei aufgetreten: ${e.target.error.name}`);
+        reader.readAsText(files[0]);
+        
+    }
+
+    function saveFile() {
+        var file = new Blob([exportCSV(csv_data)], {type: 'text/plain'});
+        var a = document.getElementById("download-link");
+        a.href = URL.createObjectURL(file);
+        a.innerText = "Bearbeitet_" + file_input_element.files[0].name;
+        a.download = "Bearbeitet_" + file_input_element.files[0].name;
+    }
+
+    file_input_element = document.getElementById("file-input-choice")
+    file_input_element.addEventListener("change", loadFile);
+
+</script>
+
+
+</html>
