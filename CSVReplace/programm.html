@@ -112,6 +112,8 @@
 
     <div style="color: gray;">
         von AlexanderHD27 (<a style="color: gray;" href="https://github.com/AlexanderHD27/toolkit">https://github.com/AlexanderHD27/toolkit</a>)
+        <br>
+        Download: <a style="color: gray;" href="https://raw.githubusercontent.com/AlexanderHD27/toolkit/master/CSVReplace/programm.html">https://raw.githubusercontent.com/AlexanderHD27/toolkit/master/CSVReplace/programm.html</a>
     </div>
 
 </body>
@@ -188,7 +190,8 @@
         for (pattern of pattern_list) {
             for (var row = 1; row < data.length; row++) {
                 search_pattern_str = pattern.search
-                if(data_in[row][pattern.search_col].trim().substr(0, search_pattern_str.length) == search_pattern_str) {
+                console.log()
+                if(data_in[row][pattern.search_col].trim().substr(0, search_pattern_str.length) == search_pattern_str || (search_pattern_str == "\"\"" && data[row][pattern.replace_col].trim().length == 0)) {
                     data_res[row][pattern.replace_col] = pattern.replace;
                 }
             }
